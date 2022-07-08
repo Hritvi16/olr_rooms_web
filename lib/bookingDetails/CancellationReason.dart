@@ -178,6 +178,15 @@ class _CancellationReasonState extends State<CancellationReason> {
     Toast.sendToast(context, response.message??"");
 
     if(response.status == 'Success') {
+      Map<String, dynamic> data = new Map();
+      data[APIConstant.act] = APIConstant.SENDSA;
+      data[APIConstant.type] = "3";
+      data['id'] = this.data['b_id'];
+      // data['id'] = widget.mobile;
+
+      print(data);
+
+      APIService().sendNSE(data);
       Navigator.pop(context, "Success");
     }
 

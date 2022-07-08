@@ -1,11 +1,20 @@
 import 'Environment.dart';
 
 class APIConstant {
-  static String getGSTDetails = "https://gstapi1.charteredinfo.com/commonapi1/v1.1/search";
+  // static String getGSTDetails1 = "gstapi.charteredinfo.com";
+  // static String getGSTDetails2 = "/commonapi/v1.1/search";
+  // static String getGSTDetails = "https://gstapi1.charteredinfo.com/commonapi1/v1.1/search";
+  static String getGSTDetails = "getGSTDetails.php";
+  static String sendSMS = "sendSMS.php";
+  static String smsApi1 = "sms.mobileadz.in";
+  // static String smsApi1 = "msg.rupayweb.in";
+  static String smsApi2 = "/api/push";
+  static String sendNSE = "sendNSE.php";
 
   static String razorpayApiKey = Environment.url1 + Environment.admin + "razorpay_api1_key.php";
   static String insertUserFCM = Environment.url1 + Environment.api1 + "insertUserFCM.php";
   static String login = Environment.url1 + Environment.api1 + "login.php";
+  // static String login = Environment.url1 + Environment.api1 + "login.php";
   static String signUp = Environment.url1 + Environment.api1 + "signUp.php";
   static String manageCustomer = "manage-customer.php";
   static String manageDashboard = Environment.url1 + Environment.api1 + "getDashboard.php";
@@ -38,6 +47,7 @@ class APIConstant {
   static String act = "act";
   static String type = "type";
 
+  static String SENDSA = "SENDSA";
   static String getByID = "FETCHBYID";
   static String getByBID = "FETCHBYBID";
   static String getByName = "FETCHBYNAME";

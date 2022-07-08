@@ -14,18 +14,18 @@ class LoginPopUp extends StatelessWidget {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return Container(
-            width: MediaQuery.of(context).size.width/3,
-            padding: EdgeInsets.fromLTRB(MySize.size3(context), MySize.size2(context), MySize.size3(context), MySize.size2(context)),
+            width: 120,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(msg,
                   style: TextStyle(
-                      fontSize:  constraints.maxWidth < 600 ? MySize.font9(context) : MySize.font7_75(context)
+                      fontSize:  16
                   ),
                 ),
                 SizedBox(
-                  height: MySize.sizeh3(context),
+                  height: 10,
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -38,7 +38,7 @@ class LoginPopUp extends StatelessWidget {
                         child: Text(key1,
                           style: TextStyle(
                               color: MyColors.colorPrimary,
-                              fontSize:  constraints.maxWidth < 600 ? MySize.font9(context) : MySize.font7_75(context)
+                              fontSize:  14
                           ),
                         )
                     ),
@@ -49,7 +49,7 @@ class LoginPopUp extends StatelessWidget {
                         child: Text(key2,
                           style: TextStyle(
                               color: MyColors.colorPrimary,
-                              fontSize:  constraints.maxWidth < 600 ? MySize.font9(context) : MySize.font7_75(context)
+                              fontSize:  14
                           ),
                         )
                     ),

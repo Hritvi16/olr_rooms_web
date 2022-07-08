@@ -51,14 +51,16 @@ class _HelpState extends State<Help> {
                           : MenuBar(sharedPreferences: sharedPreferences, name: "HELP"),
                     ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: constraints.maxWidth < 600 ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 32),
-                            child: constraints.maxWidth < 600 ? getHelpBodyM() : getHelpBodyW()
-                          ),
-                          Footer()
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: constraints.maxWidth < 600 ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 32),
+                              child: constraints.maxWidth < 600 ? getHelpBodyM() : getHelpBodyW()
+                            ),
+                            Footer()
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -99,6 +101,7 @@ class _HelpState extends State<Help> {
       child: ListView.separated(
         scrollDirection: Axis.vertical,
         itemCount: helps.length,
+        shrinkWrap: true,
         separatorBuilder: (BuildContext context, index) {
           return SizedBox(
             height: MySize.sizeh2(context),

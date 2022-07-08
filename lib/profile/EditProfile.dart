@@ -206,6 +206,13 @@ class _EditprofileState extends State<Editprofile> {
     gstController.text = userInfo.user?.cusGst??"";
     legalNameController.text = userInfo.user?.cusGstLegalName??"";
     addressController.text = userInfo.user?.cusGstAddress??"";
+    if(gstController.text.isNotEmpty)
+      verified_gst = true;
+
+    setState(() {
+      
+    });
+
   }
 
   getInfoDesign(IconData icon, TextEditingController controller, String hint, bool readOnly) {
@@ -357,43 +364,20 @@ class _EditprofileState extends State<Editprofile> {
     DateTime min = DateTime(today.year-100);
     DateTime max = DateTime(today.year-18, today.month, today.day);
     chosenDate = dobController.text.isNotEmpty ? chosenDate : max;
-    showCupertinoModalPopup(
+    showDatePicker(
         context: context,
-        builder: (_) => Container(
-          height: 310,
-          color: const Color.fromARGB(255, 255, 255, 255),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: CupertinoButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    dobController.text = DateFormat("dd-MM-yyyy").format(chosenDate);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 250,
-                child: CupertinoDatePicker(
-                  initialDateTime: chosenDate,
-                  minimumDate: min,
-                  maximumDate: max,
-                  onDateTimeChanged: (val) {
-                    setState(() {
-                      chosenDate = val;
-                    });
-                  },
-                  mode: CupertinoDatePickerMode.date,
-                ),
-              ),
-
-              // Close the modal
-
-            ],
-          ),
-        ));
+        initialDate: chosenDate,
+        firstDate: min,
+        lastDate: max
+    ).then((value) {
+      if(value!=null) {
+        // Navigator.of(context).pop();
+        setState(() {
+          chosenDate = value;
+        });
+        dobController.text = DateFormat("dd-MM-yyyy").format(chosenDate);
+      }
+    });
   }
 
   getGenderDesign() {

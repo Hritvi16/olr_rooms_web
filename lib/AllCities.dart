@@ -118,7 +118,7 @@ class _AllCitiesState extends State<AllCities> {
 
   getAlphaDesign(int ind) {
     return SizedBox(
-          width: 20,
+          width: 30,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
@@ -255,8 +255,13 @@ class _AllCitiesState extends State<AllCities> {
   void sortCities(String alphabet) {
     city = [];
     cityInfo.forEach((CityInfo cityInfo) {
-      if((cityInfo.city?.cName??"").startsWith(alphabet)) {
+      if(alphabet=="ALL"){
         city.add(cityInfo);
+      }
+      else {
+        if ((cityInfo.city?.cName ?? "").startsWith(alphabet)) {
+          city.add(cityInfo);
+        }
       }
     });
     setState(() {

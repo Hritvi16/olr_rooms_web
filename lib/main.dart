@@ -4,10 +4,9 @@ import 'package:country_picker/country_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:olr_rooms_web/api/APIService.dart';
 import 'package:olr_rooms_web/firebase_options.dart';
-import 'package:olr_rooms_web/hotel/hotelDetails/HotelDetails.dart';
-import 'package:olr_rooms_web/model/HotelImages.dart';
 import 'package:olr_rooms_web/model/Response.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -17,8 +16,10 @@ import 'Login.dart';
 import 'LoginData.dart';
 import 'colors/MyColors.dart';
 import 'package:olr_rooms_web/route/route_services.dart';
-import 'home/Home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'home/Home.dart';
+import 'url_strategy_nativeConfig.dart'
+if(dart.library.html) 'url_strategy_webConfig.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -42,6 +43,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   WidgetsFlutterBinding.ensureInitialized();
+  // setUrlStrategy(PathUrlStrategy());
+  urlConfig();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   // await flutterLocalNotificationsPlugin
   //     .resolvePlatformSpecificImplementation<
@@ -53,6 +56,9 @@ Future<void> main() async {
     sound: true,
   );
   runApp(const MyApp());
+  // print("GET TOKEN ABOVE");
+  // FirebaseMessaging.instance.getToken().then((value) => print(value));
+  // print("GET TOKEN BELOW");
 }
 
 class MyApp extends StatelessWidget {
@@ -128,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       if (sharedPreferences!.getString("status") == "logged in") {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (BuildContext context) => HotelDetails(h_id: "1")),
+                builder: (BuildContext context) => Home()),
             (Route<dynamic> route) => false);
       } else {
         Navigator.of(context).pushAndRemoveUntil(
@@ -142,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    getFirebaseMessagingSetUp();
     // _controller = VideoPlayerController.asset('assets/splash.mov')
     //   ..initialize().then((_) {
     //     _controller.play();
@@ -202,12 +209,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       provisional: false,
       sound: true,
     );
+    print('User granted permission: ${settings.authorizationStatus}');
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        print(message);
+        print("Testing"+message.data.toString());
       }
+      else
+        {
+          print(message?.data);
+          print(message.isNullOrBlank);
+        }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -224,6 +237,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   body: message.notification?.body);
             }));
       }
+      else
+        {
+          print("Service else");
+        }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');

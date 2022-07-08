@@ -2,8 +2,8 @@ class Environment {
 
   //static String url = "http://192.168.1.205/vijaywargiya_hosted/";
   // static String url = "http://192.168.1.8/vijaywargiya_hosted/";
-   static String url1 = "http://vijaywargiya.rupayweb.in/OLR/";
-   static String url2 = "vijaywargiya.rupayweb.in";
+   static String url1 = "https://olrrooms.com/OLR/";
+   static String url2 = "olrrooms.com";
   //static String url = "http://192.168.167.59/vijaywargiya/";
   // static String url = "http://ec2-35-154-110-99.ap-south-1.compute.amazonaws.com/";
   static String api1 = "customer_apis/";

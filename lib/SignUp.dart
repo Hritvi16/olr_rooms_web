@@ -4,6 +4,7 @@ import 'package:olr_rooms_web/api/APIConstant.dart';
 import 'package:olr_rooms_web/api/APIService.dart';
 import 'package:olr_rooms_web/colors/MyColors.dart';
 import 'package:olr_rooms_web/model/SignUpResponse.dart';
+import 'package:olr_rooms_web/size/MySize.dart';
 import 'package:olr_rooms_web/toast/Toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home/Home.dart';
@@ -38,106 +39,180 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text("Create an account",
-          style: TextStyle(color: MyColors.black)
-        ),
-        iconTheme: IconThemeData(
-          color: MyColors.black
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Container(
+              height: MySize.sizeh100(context),
+              width: MySize.size100(context),
+              padding: EdgeInsets.symmetric(vertical: MySize.sizeh10(context)),
+              color: MyColors.white,
+              child: constraints.maxWidth<600 ? getBodyM() : getBodyW(),
+            );
+          },
         ),
       ),
-      body: SafeArea(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          color: MyColors.white,
-          child: Form(
-              key: formkey,
-              child: Container(
-                padding: EdgeInsets.all(20),
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: email,
-                      cursorColor: MyColors.colorPrimary,
-                      style: TextStyle(color: MyColors.black),
-                      decoration: InputDecoration(
-                        errorText: emailValidate! ? emailError : null,
-                        label: Text("Email"),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        String message = "";
-                        if (value!.isEmpty) {
-                          return "* Required";
-                        } else if (!EmailValidator.validate(value)) {
-                          return "Enter valid email address";
-                        } else {
-                          return null;
-                        }
+    );
+  }
 
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: name,
-                      cursorColor: MyColors.colorPrimary,
-                      style: TextStyle(color: MyColors.black),
-                      decoration: InputDecoration(
-                        errorText: nameValidate! ? nameError : null,
-                        label: Text("Name"),
-                      ),
-                      keyboardType: TextInputType.name,
-                      validator: (value) {
-                        String message = "";
-                        if (value!.isEmpty) {
-                          return "* Required";
-                        } else {
-                          return null;
-                        }
+  getBodyM() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: MySize.size25(context)),
+            child: Image.asset(
+                "assets/logo/olr.png"
+            ),
+          ),
+          SizedBox(
+            height: MySize.sizeh25(context),
+          ),
+          getForm("M")
+        ],
+      ),
+    );
+  }
 
-                      },
+  getBodyW() {
+    return Row(
+      children: [
+        Flexible(
+          fit: FlexFit.tight,
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: MySize.size50(context)/4),
+            child: Image.asset(
+                "assets/logo/olr.png"
+            ),
+          ),
+        ),
+        Flexible(
+          fit: FlexFit.tight,
+          flex: 1,
+          child: Container(
+            height: MySize.sizeh100(context),
+            margin: EdgeInsets.symmetric(horizontal: MySize.size50(context)/6),
+            padding: EdgeInsets.symmetric(vertical: MySize.sizeh10(context)),
+            decoration: BoxDecoration(
+                color: MyColors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(3)),
+                boxShadow: [
+                  BoxShadow(
+                    color: MyColors.grey,
+                    blurRadius: 3,
+                  )
+                ]
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    "Create An Account",
+                    style: TextStyle(
+                        color: MyColors.colorPrimary,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w500
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    IgnorePointer(
-                      ignoring: ignore,
-                      child: SizedBox(
-                        height: 55,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              // if (validate() == 0) {
-                              //   login();
-                              // }
-
-                              print("EmailValidator.validate(value)");
-                              print(EmailValidator.validate(email.text));
-                              if (formkey.currentState!.validate()) {
-                                print("Validated");
-
-                                ignore = true;
-                                setState(() {
-
-                                });
-                                signUp();
-                              } else {
-                                print("Not Validated");
-                              }
-                            },
-                            child: const Text("Sign Up")),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: MySize.sizeh25(context),
+                  ),
+                  getForm("W")
+                ],
               ),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  getForm(String type) {
+    return Form(
+      key: formkey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: type=="W" ? MySize.size1(context) : MySize.size5(context)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: email,
+              cursorColor: MyColors.colorPrimary,
+              style: TextStyle(color: MyColors.black),
+              decoration: InputDecoration(
+                errorText: emailValidate! ? emailError : null,
+                label: Text("Email"),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              validator: (value) {
+                String message = "";
+                if (value!.isEmpty) {
+                  return "* Required";
+                } else if (!EmailValidator.validate(value)) {
+                  return "Enter valid email address";
+                } else {
+                  return null;
+                }
+
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              controller: name,
+              cursorColor: MyColors.colorPrimary,
+              style: TextStyle(color: MyColors.black),
+              decoration: InputDecoration(
+                errorText: nameValidate! ? nameError : null,
+                label: Text("Name"),
+              ),
+              keyboardType: TextInputType.name,
+              validator: (value) {
+                String message = "";
+                if (value!.isEmpty) {
+                  return "* Required";
+                } else {
+                  return null;
+                }
+
+              },
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            IgnorePointer(
+              ignoring: ignore,
+              child: SizedBox(
+                height: 55,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                    onPressed: () {
+                      // if (validate() == 0) {
+                      //   login();
+                      // }
+
+                      print("EmailValidator.validate(value)");
+                      print(EmailValidator.validate(email.text));
+                      if (formkey.currentState!.validate()) {
+                        print("Validated");
+
+                        ignore = true;
+                        setState(() {
+
+                        });
+                        signUp();
+                      } else {
+                        print("Not Validated");
+                      }
+                    },
+                    child: const Text("Sign Up")),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -177,6 +252,15 @@ class _SignUpState extends State<SignUp> {
       sharedPreferences!.setString("email", email.text);
       sharedPreferences!.setString("name", name.text);
       sharedPreferences!.setBool("pop", false);
+
+      Map<String, dynamic> data = new Map();
+      data[APIConstant.act] = APIConstant.SENDSA;
+      data[APIConstant.type] = "1";
+      data['id'] = widget.mobile;
+
+      print(data);
+
+      APIService().sendNSE(data);
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));

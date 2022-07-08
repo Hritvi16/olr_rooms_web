@@ -60,19 +60,31 @@ class APIService {
     return token;
   }
   Future<Map<String, dynamic>> getGSTDetails(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(APIConstant.getGSTDetails, "", queryParameters);
-    var result;
-    try {
-      //404
-      
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.getGSTDetails, queryParameters);
+    print(url);
     var result = await http.get(url);
-    } on DioError catch (e) {
-      if (e.response != null) {
-        result = e.response;
-      }
-    }
+    print(result.body);
+
+    return json.decode(result.body);
+  }
+
+  Future<String> sendSMS(Map<String, dynamic> queryParameters) async{
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.sendSMS, queryParameters);
+    // var url = Uri.https(APIConstant.smsApi1, APIConstant.smsApi2, queryParameters);
+    print(url);
+    // print(Uri.https(APIConstant.smsApi1, APIConstant.smsApi2, queryParameters));
+    var result = await http.get(url);
+
     return result.body;
   }
+
+  Future<dynamic> sendNSE(Map<String, dynamic> data) async{
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.sendNSE, data);
+    Map<String, String> headers = await getHeader();
+    var result = await http.get(url, headers: headers);
+    return result.body;
+  }
+
 
   Future<DataResponse> getRazorApi() async{
     var url = Uri.parse(APIConstant.razorpayApiKey);
@@ -102,9 +114,12 @@ class APIService {
   Future<LoginResponse> login(Map<String, dynamic> data) async {
     print("hhs");
     var url = Uri.parse(APIConstant.login);
+    // var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.login, data);
+    print(Uri.https(Environment.url2, Environment.api2 + APIConstant.login, data).path);
     print("hhxxs");
     Map<String, String> headers = await getHeader();
     print("hhsxx");
+    print(await http.post(url, body: jsonEncode(data), headers: headers));
     var result = await http.post(url, body: jsonEncode(data), headers: headers);
     print("hhsss");
   print(result.body);
@@ -113,7 +128,7 @@ class APIService {
   }
 
   Future<UserResponse> getUserDetails(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageCustomer, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageCustomer, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     UserResponse userResponse = UserResponse.fromJson(json.decode(result.body));
@@ -129,7 +144,7 @@ class APIService {
   }
 
   Future<CityResponse> getAllCities(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
     print(url);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
@@ -138,7 +153,7 @@ class APIService {
   }
 
   Future<CityResponse> getCitiesByName(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     CityResponse cityResponse = CityResponse.fromJson(json.decode(result.body));
@@ -146,7 +161,7 @@ class APIService {
   }
 
   Future<PopularCityResponse> getPopularCities(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageCities, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     PopularCityResponse popularCityResponse = PopularCityResponse.fromJson(json.decode(result.body));
@@ -178,7 +193,7 @@ class APIService {
   }
 
   Future<HotelResponse> getBannerHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -197,7 +212,7 @@ class APIService {
   }
 
   Future<HotelResponse> getDashboardHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -205,7 +220,7 @@ class APIService {
   }
 
   Future<HotelResponse> getNearbyHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -214,7 +229,7 @@ class APIService {
 
   Future<HotelDetailResponse> getHotelDetails(Map<String, dynamic> queryParameters) async{
 
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     print("queryParameterssss");
     Map<String, String> headers = await getHeader();
     print("queryParameterggeesdds");
@@ -227,7 +242,7 @@ class APIService {
   }
 
   Future<HotelImagesResponse> getHotelImages(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 +APIConstant.getHotelImages, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 +APIConstant.getHotelImages, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelImagesResponse hotelImagesResponse = HotelImagesResponse.fromJson(json.decode(result.body));
@@ -244,7 +259,7 @@ class APIService {
   }
 
   Future<HotelSlotsResponse> getHotelSlots(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2,APIConstant.getHotelSlots, queryParameters);
+    var url = Uri.https(Environment.url2,APIConstant.getHotelSlots, queryParameters);
     print(url);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
@@ -286,7 +301,7 @@ class APIService {
   }
 
   Future<NearbyResponse> getNearbyPlaces(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.getNearbyPlaces, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.getNearbyPlaces, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     NearbyResponse nearbyResponse = NearbyResponse.fromJson(json.decode(result.body));
@@ -310,7 +325,7 @@ class APIService {
   }
 
   Future<HotelOfferResponse> getAllOffers(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2+APIConstant.manageOffers, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2+APIConstant.manageOffers, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelOfferResponse hotelOfferResponse = HotelOfferResponse.fromJson(json.decode(result.body));
@@ -335,7 +350,7 @@ class APIService {
 
 
   Future<BookingResponse> getMyBookings(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageBookings, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageBookings, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     BookingResponse bookingResponse = BookingResponse.fromJson(json.decode(result.body));
@@ -343,7 +358,7 @@ class APIService {
   }
 
   Future<BookingDetailResponse> getBookingDetails(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageBookings, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageBookings, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     BookingDetailResponse bookingDetailResponse = BookingDetailResponse.fromJson(json.decode(result.body));
@@ -351,7 +366,7 @@ class APIService {
   }
 
   Future<HotelResponse> getWishlistHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageWishlist, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageWishlist, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -359,7 +374,7 @@ class APIService {
   }
 
   Future<PolicyResponse> getPolicy(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.managePolicies, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.managePolicies, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     PolicyResponse policyResponse = PolicyResponse.fromJson(json.decode(result.body));
@@ -367,7 +382,7 @@ class APIService {
   }
 
   Future<RequestTypeResponse> getRequestTypes(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.getRequestTypes, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.getRequestTypes, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     RequestTypeResponse requestTypeResponse = RequestTypeResponse.fromJson(json.decode(result.body));
@@ -375,7 +390,7 @@ class APIService {
   }
 
   Future<TicketResponse> getRequestedTickets(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, Environment.api2 + APIConstant.manageTickets, queryParameters);
+    var url = Uri.https(Environment.url2, Environment.api2 + APIConstant.manageTickets, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     TicketResponse ticketResponse = TicketResponse.fromJson(json.decode(result.body));
@@ -407,7 +422,7 @@ class APIService {
   }
 
   Future<HotelResponse> getSearchedHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -415,7 +430,7 @@ class APIService {
   }
 
   Future<HotelResponse> getFilteredHotels(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageHotels, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageHotels, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     HotelResponse hotelResponse = HotelResponse.fromJson(json.decode(result.body));
@@ -439,7 +454,7 @@ class APIService {
   }
 
   Future<ReviewsResponse> getRatings(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2 ,Environment.api2 + APIConstant.manageReviews, queryParameters);
+    var url = Uri.https(Environment.url2 ,Environment.api2 + APIConstant.manageReviews, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     ReviewsResponse reviewsResponse = ReviewsResponse.fromJson(json.decode(result.body));
@@ -455,7 +470,7 @@ class APIService {
   }
 
   Future<AreaResponse> getAreasByName(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageAreas, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageAreas, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     AreaResponse areaResponse = AreaResponse.fromJson(json.decode(result.body));
@@ -463,7 +478,7 @@ class APIService {
   }
 
   Future<AreaResponse> getAreasByCity(Map<String, dynamic> queryParameters) async{
-    var url = Uri.http(Environment.url2, APIConstant.manageAreas, queryParameters);
+    var url = Uri.https(Environment.url2, APIConstant.manageAreas, queryParameters);
     Map<String, String> headers = await getHeader();
     var result = await http.get(url, headers: headers);
     AreaResponse areaResponse = AreaResponse.fromJson(json.decode(result.body));

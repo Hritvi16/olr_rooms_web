@@ -46,58 +46,20 @@ class Essential {
   }
 
   void confirmLogout(BuildContext context) {
-    BuildContext dialogContext;
-
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        dialogContext = context;
-        return Dialog(
-          backgroundColor: Colors.white,
-          child: Container(
-            padding: EdgeInsets.only(left: 15, right: 10, top: 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                new Text("Are you sure you want to logout?",
-                  style: TextStyle(
-                      fontSize: 16
-                  ),
-                ),
-                new Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    new TextButton(
-                        onPressed: () {
-                          Navigator.pop(dialogContext);
-                        },
-                        child: Text("No",
-                          style: TextStyle(
-                              color: MyColors.colorPrimary
-                          ),
-                        )
-                    ),
-                    new TextButton(
-                        onPressed: () {
-                          Navigator.pop(dialogContext);
-                          logout(context);
-                        },
-                        child: Text("Yes",
-                          style: TextStyle(
-                              color: MyColors.colorPrimary
-                          ),
-                        )
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+      builder: (BuildContext dialogContext) {
+        return const LoginPopUp(
+          msg: "Are you sure you want to logout?",
+          key1: 'No',
+          key2: 'Yes',
         );
       },
-    );
+    ).then((value) {
+      if(value=="Yes")
+        logout(context);
+    });
   }
 
   Future<void> logout(BuildContext context) async {

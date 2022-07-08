@@ -11,8 +11,10 @@ if (!firebase.apps.length) {
      storageBucket: 'olrrooms-1c565.appspot.com',
      measurementId: 'G-3RXQNZ79RW',
    });
+   console.log("If Firebase JS");
 }else {
    firebase.app(); // if already initialized, use that one
+   console.log("Else Firebase JS");
 }
 
 
@@ -30,4 +32,4 @@ messaging.onBackgroundMessage(function(payload) {
 
     self.registration.showNotification(notificationTitle,
       notificationOptions);
-  });
+});

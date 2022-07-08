@@ -30,11 +30,7 @@ class _SuccessPageState extends State<SuccessPage> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColors.white,
-      body: WillPopScope(
-        onWillPop: () async{
-          return false;
-        },
-        child: Lottie.asset(
+      body: Lottie.asset(
             'assets/lottie/booking_confirm.json',
             controller: controller,
             repeat: true,
@@ -98,7 +94,6 @@ class _SuccessPageState extends State<SuccessPage> with TickerProviderStateMixin
         //     ],
         //   ),
         // ),
-      ),
     );
   }
 }

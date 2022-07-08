@@ -49,14 +49,16 @@ class _HelplineState extends State<Helpline> {
                       : MenuBar(sharedPreferences: sharedPreferences, name: "HELPLINE"),
                 ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: constraints.maxWidth < 600 ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 32),
-                          child: constraints.maxWidth < 600 ? getHelplineBodyM() : getHelplineBodyW()
-                      ),
-                      Footer()
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                            padding: constraints.maxWidth < 600 ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 32),
+                            child: constraints.maxWidth < 600 ? getHelplineBodyM() : getHelplineBodyW()
+                        ),
+                        Footer()
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -77,6 +79,7 @@ class _HelplineState extends State<Helpline> {
       child: ListView.separated(
         scrollDirection: Axis.vertical,
         itemCount: cities.length,
+        shrinkWrap: true,
         separatorBuilder: (BuildContext context, index) {
           return SizedBox(
             height: MySize.sizeh3(context),
@@ -95,6 +98,7 @@ class _HelplineState extends State<Helpline> {
       child: ListView.separated(
         scrollDirection: Axis.vertical,
         itemCount: cities.length,
+        shrinkWrap: true,
         separatorBuilder: (BuildContext context, index) {
           return SizedBox(
             height: MySize.sizeh3(context),
@@ -287,6 +291,7 @@ class _HelplineState extends State<Helpline> {
   }
   void start() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    print("HDH");
     await getHelplines();
   }
 

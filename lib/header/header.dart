@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:olr_rooms_web/Bookings.dart';
 import 'package:olr_rooms_web/Essential.dart';
 import 'package:olr_rooms_web/GlobalSearch.dart';
+import 'package:olr_rooms_web/Login.dart';
 import 'package:olr_rooms_web/SearchList.dart';
 import 'package:olr_rooms_web/Support.dart';
 import 'package:olr_rooms_web/Wishlist.dart';
@@ -1052,7 +1053,19 @@ class MenuBar extends StatelessWidget {
                       ),
                       MouseRegion(
                         cursor: SystemMouseCursors.click,
-                        child: PopupMenuButton(
+                        child: sharedPreferences.getString("login_type")!="customer" ?
+                        TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => const Login()),
+                                        (Route<dynamic> route) => false);
+                              },
+                              style: menuButtonStyle,
+                              child: Text(
+                                "Login",
+                              ),
+                            )
+                        : PopupMenuButton(
                           tooltip: "",
                           position: PopupMenuPosition.under,
                           child: Container(
@@ -1072,12 +1085,12 @@ class MenuBar extends StatelessWidget {
                                   cursor: SystemMouseCursors.click,
                                   child: GestureDetector(
                                     onTap: () {
-                                      if(sharedPreferences.getString("login_type")=="customer") {
+                                      // if(sharedPreferences.getString("login_type")=="customer") {
                                           Essential().directTo(context, index+6);
-                                        }
-                                        else{
-                                          Essential().loginPopUp(context);
-                                        }
+                                        // }
+                                        // else{
+                                        //   Essential().loginPopUp(context);
+                                        // }
                                     },
                                     child: ListTile(
                                       mouseCursor: SystemMouseCursors.click,
@@ -1262,7 +1275,7 @@ class CustomDrawer extends StatelessWidget {
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: MySize.sizeh2_5(context), horizontal: MySize.size2(context)),
-                color: MyColors.black,
+                color: MyColors.white,
                 child: Column(
                   children: [
                     Row(

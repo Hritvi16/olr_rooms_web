@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:olr_rooms_web/SuccessPage.dart';
 import 'package:olr_rooms_web/api/APIConstant.dart';
 import 'package:olr_rooms_web/api/APIService.dart';
+import 'package:olr_rooms_web/bookingDetails/payments.dart';
 import 'package:olr_rooms_web/colors/MyColors.dart';
 import 'package:olr_rooms_web/header/header.dart';
 import 'package:olr_rooms_web/model/ConfirmBookingResponse.dart';
@@ -1337,7 +1338,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
       );
     }
 
-    print(data);
+    // print(data);
     ConfirmBookingResponse confirmBookingResponse = await APIService().insertBooking(data);
     print("hotelOfferResponse.toJson()");
     print(confirmBookingResponse.toJson());
@@ -1356,24 +1357,50 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
         'order_id': confirmBookingResponse.billNo, // Generate order_id using Orders API
         'description': 'Booking',
         'timeout': 300, // in seconds
-        // 'prefill': {
-        //   'contact': '9586033791',
-        //   'email': 'hritvi16gajiwala@gmail.com'
-        // }
+        'prefill': {
+          'contact': '9586033791',
+          'email': 'hritvi16gajiwala@gmail.com'
+        }
       };
 
-      print(options);
+      // print(options);
       // _razorpay.open(options);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) =>
-          SuccessPage()
-      )
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context)=>Webpayment(
+            name: "OLR ROOMS",
+            mobile: "+91-9586033791",
+            email: "hritvi16gajiwala@gmail.com",
+            order_id: confirmBookingResponse.billNo,
+            image: "http://vijaywargiya.rupayweb.in/OLR/admin/hotels/1648114171.jpg",price:int.parse(data['b_deposit']) * 100,
+          ))
       ).then((value) {
-        DeleteCache.deleteKey("key_booking");
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => Home()),
-                (Route<dynamic> route) => false);
+        if(value=="SUCCESS") {
+
+          Map<String, dynamic> data = new Map();
+          data[APIConstant.act] = APIConstant.SENDSA;
+          data[APIConstant.type] = "2";
+          data['id'] = b_id;
+          // data['id'] = widget.mobile;
+
+          print(data);
+
+          APIService().sendNSE(data);
+          DeleteCache.deleteKey("key_booking");
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Home()),
+                  (Route<dynamic> route) => false);
+
+
+        }
+        else {
+
+            gesture = true;
+            setState(() {
+
+            });
+            deleteBooking();
+        }
       });
 
     }

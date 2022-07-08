@@ -36,13 +36,6 @@
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
   </script>
-<!--  <script>-->
-<!--if ("serviceWorker" in navigator) {-->
-<!--  window.addEventListener("load", function () {-->
-<!--    navigator.serviceWorker.register("/flutter_service_worker.js");-->
-<!--  });-->
-<!--}-->
-<!--</script>-->
 
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
@@ -53,46 +46,32 @@
 
 </head>
 <body>
-<!--<script>-->
-<!--&lt;!&ndash;Update with yours config&ndash;&gt;-->
-<!--  const firebaseConfig = {-->
-<!--      apiKey: 'AIzaSyAmw1PjLK82peDwBi-a1pxLSBLYkXnXHPk',-->
-<!--      appId: '1:191908340162:web:b7d897f1db846fe018b65b',-->
-<!--      messagingSenderId: '191908340162',-->
-<!--      projectId: 'olrrooms-1c565',-->
-<!--      authDomain: 'olrrooms-1c565.firebaseapp.com',-->
-<!--      storageBucket: 'olrrooms-1c565.appspot.com',-->
-<!--      measurementId: 'G-3RXQNZ79RW',-->
-<!--  };-->
-<!--  if (!firebase.apps.length) {-->
-<!--   firebase.initializeApp(firebaseConfig);-->
-<!--  }-->
-<!--  else {-->
-<!--     firebase.app(); // if already initialized, use that one-->
-<!--  }-->
-  </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="js/payment.js"></script>
 <!--<script src="main.dart.js" type="application/javascript"></script>-->
-<!--<script>-->
-<!--  if ("serviceWorker" in navigator) {-->
-<!--      window.addEventListener("load", function () {-->
-<!--        navigator.serviceWorker.register("/firebase-messaging-sw.js");-->
-<!--      });-->
-<!--    }-->
-<!--    </script>-->
-<!--navigator.serviceWorker.register("/firebase-messaging-sw.js");-->
-  <script>
+<script>
+  if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/firebase-messaging-sw.js");
+        console.log("Loaded");
+         var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        console.log(serviceWorkerUrl+"Empty");
+      });
+   }
+</script>
 
+<script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        return appRunner.runApp();
-      });
+    _flutter.loader.loadEntrypoint({
+                serviceWorker: {
+                  serviceWorkerVersion: serviceWorkerVersion,
+                }
+              }).then(function(engineInitializer) {
+                return engineInitializer.initializeEngine();
+              }).then(function(appRunner) {
+                return appRunner.runApp();
+          });
     });
   </script>
 </body>
